@@ -34,9 +34,3 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
-
-# server
-.env
-config.ts
-
-android
