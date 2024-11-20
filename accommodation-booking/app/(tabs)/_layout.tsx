@@ -1,45 +1,85 @@
-import React from "react";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {Link, Tabs} from "expo-router";
-import {Pressable} from "react-native";
+import {Text, View} from "react-native";
+import {Tabs} from "expo-router";
+import {FontAwesome} from "@expo/vector-icons";
+import {StatusBar} from "expo-status-bar";
 
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
+import {useAuth} from "@/context/auth-context";
+
+interface TabIconProps {
+  icon: any;
   color: string;
-}) {
-  return <FontAwesome size={28} style={{marginBottom: -3}} {...props} />;
+  name: string;
+  focused: boolean;
 }
 
-export default function TabLayout() {
+const TabIcon = ({icon, color, name, focused}: TabIconProps) => {
   return (
-    <Tabs>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Tab One",
-          tabBarIcon: ({color}) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({pressed}) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    style={{marginRight: 15, opacity: pressed ? 0.5 : 1}}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: "Tab Two",
-          tabBarIcon: ({color}) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-    </Tabs>
+    <View className="flex items-center justify-center gap-2">
+      {icon}
+      <Text
+        className={`${focused ? "font-medium" : ""} text-xs`}
+        style={{color: color}}
+      >
+        {name}
+      </Text>
+    </View>
   );
-}
+};
+
+const TabLayout = () => {
+  const {authState} = useAuth();
+
+  return (
+    <>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: "black",
+          tabBarInactiveTintColor: "gray",
+          tabBarShowLabel: false,
+          tabBarStyle: {
+            backgroundColor: "#1D4ED8",
+            borderTopWidth: 1,
+            borderTopColor: "#232533",
+            height: 84,
+          },
+        }}
+      >
+        <Tabs.Screen
+          name="(drawer)"
+          options={{
+            title: "Home",
+            headerShown: false,
+            tabBarIcon: ({color, focused}) => (
+              <TabIcon
+                icon={<FontAwesome name="home" size={24} color={color} />}
+                name="Home"
+                focused={focused}
+                color="white"
+              />
+            ),
+          }}
+          redirect={authState?.accesstoken === null}
+        />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: "Profile",
+            headerShown: false,
+            tabBarIcon: ({color, focused}) => (
+              <TabIcon
+                icon={<FontAwesome name="user" size={24} color={color} />}
+                name="Profile"
+                focused={focused}
+                color="white"
+              />
+            ),
+          }}
+          redirect={authState?.accesstoken === null}
+        />
+      </Tabs>
+      <StatusBar style="inverted" backgroundColor="#1D4ED8" />
+    </>
+  );
+};
+
+export default TabLayout;

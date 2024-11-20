@@ -11,7 +11,7 @@ const ThemeSwitcher = () => {
       <IconButton
         icon={
           <FontAwesome
-            name={colorScheme === "dark" ? "moon-o" : "sun-o"}
+            name={colorScheme === "dark" ? "sun-o" : "moon-o"}
             size={36}
             color="white"
           />

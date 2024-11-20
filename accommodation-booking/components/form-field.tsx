@@ -20,6 +20,23 @@ interface FormFieldProps {
   otherStyles?: any;
   type?: "password";
   custom?: any;
+  autoComplete:
+    | "address-line1"
+    | "country"
+    | "email"
+    | "current-password"
+    | "email"
+    | "name"
+    | "username"
+    | "tel";
+  keyboardType:
+    | "default"
+    | "number-pad"
+    | "decimal-pad"
+    | "numeric"
+    | "email-address"
+    | "phone-pad"
+    | "url";
 }
 
 const FormField = ({
@@ -65,7 +82,7 @@ const FormField = ({
             {type === "password" && (
               <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                 <Entypo
-                  name="eye"
+                  name={showPassword ? "eye-with-line" : "eye"}
                   size={24}
                   color={colorScheme === "dark" ? "white" : "black"}
                 />
