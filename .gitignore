@@ -38,5 +38,3 @@ yarn-error.*
 # server
 .env
 config.ts
-
-android
