@@ -14,24 +14,24 @@ const instance = new Razorpay({
 const bookingCtrl = {
   getUserBooking: async (req, res) => {
     try {
-      const booking = await Booking.find({user: req.id})
+      const bookings = await Booking.find({user: req.user._id})
         .populate("user", "_id username email mobileNumber image")
         .populate("hotel", "title _id");
-      if (!booking)
+      if (!bookings)
         return res.json({msg: "This booking does not exists.", success: false});
 
-      return res.json({booking, success: true});
+      return res.json({bookings, success: true});
     } catch (error) {
       return res.json({msg: error.message, success: false});
     }
   },
   updateBooking: async (req, res) => {
     try {
-      const {status, isPaid, id} = req.body;
+      const {status, id} = req.body;
 
       const booking = await Booking.findByIdAndUpdate(
         id,
-        {status, isPaid},
+        {status},
         {new: true}
       );
       if (!booking)
@@ -41,6 +41,17 @@ const bookingCtrl = {
         });
 
       return res.json({message: "Booking updated successful.", success: true});
+    } catch (error) {
+      return res.json({msg: error.message, success: false});
+    }
+  },
+  getBooking: async (req, res) => {
+    try {
+      const booking = await Booking.findById(req.params.id)
+        .populate("user", "_id username email mobileNumber image")
+        .populate("hotel", "_id title description images");
+
+      return res.json({booking, success: true});
     } catch (error) {
       return res.json({msg: error.message, success: false});
     }
@@ -58,14 +69,13 @@ const bookingCtrl = {
   },
   getHotelBooking: async (req, res) => {
     try {
-      const booking = await Booking.find({hotel: req.params.hotel}).populate(
-        "user",
-        "_id username email mobileNumber image"
-      );
-      if (!booking)
+      const bookings = await Booking.find({hotel: req.params.hotel})
+        .populate("user", "_id username email mobileNumber image")
+        .populate("hotel", "title _id");
+      if (!bookings)
         return res.json({msg: "This booking does not exists.", success: false});
 
-      return res.json({booking, success: true});
+      return res.json({bookings, success: true});
     } catch (error) {
       return res.json({msg: error.message, success: false});
     }
@@ -93,8 +103,11 @@ const bookingCtrl = {
         razorpaySignature,
         hotel,
         price,
-        startDate,
-        endDate,
+        checkInDate,
+        checkOutDate,
+        numberOfDays,
+        adults,
+        children,
       } = req.body;
       const user = req.user._id;
 
@@ -120,11 +133,13 @@ const bookingCtrl = {
           razorpay_payment_id: razorpayPaymentId,
           razorpay_signature: razorpaySignature,
         },
-        startDate: startDate,
-        endDate: endDate,
+        checkInDate,
+        checkOutDate,
+        numberOfDays,
+        adults,
+        children,
         price: price,
         status: "pending",
-        isPaid: true,
       });
       await newBooking.save();
 

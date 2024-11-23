@@ -10,9 +10,11 @@ router.get("/booking", auth, bookingCtrl.getUserBooking);
 
 router.put("/booking", authAdmin, bookingCtrl.updateBooking);
 
+router.get("/booking/:id", auth, bookingCtrl.getBooking);
+
 router.get("/bookings", authAdmin, bookingCtrl.getBookings);
 
-router.get("/hotel-booking/:hotel", auth, bookingCtrl.getHotelBooking);
+router.get("/hotel-booking/:hotel", authAdmin, bookingCtrl.getHotelBooking);
 
 router.post("/razorpay", auth, bookingCtrl.getRazorpay);
 

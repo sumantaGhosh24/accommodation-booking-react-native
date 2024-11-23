@@ -5,7 +5,7 @@ const ratingCtrl = {
     try {
       const ratings = await Rating.find()
         .populate("hotel", "title _id")
-        .populate("user", "username email image");
+        .populate("user", "firstName lastName username email image");
       if (!ratings)
         return res.json({message: "No rating exists.", success: false});
 
@@ -18,7 +18,7 @@ const ratingCtrl = {
     try {
       const ratings = await Rating.find({hotel: req.params.hotel}).populate(
         "user",
-        "username email image"
+        "firstName lastName username email image"
       );
       if (!ratings)
         return res.json({message: "No rating exists.", success: false});
@@ -30,8 +30,8 @@ const ratingCtrl = {
   },
   getMyRatings: async (req, res) => {
     try {
-      const ratings = await Rating.find({user: req.id})
-        .populate("user", "username email image")
+      const ratings = await Rating.find({user: req.user._id})
+        .populate("user", "firstName lastName username email image")
         .populate("hotel", "title image");
       if (!ratings)
         return res.json({message: "No rating exists.", success: false});

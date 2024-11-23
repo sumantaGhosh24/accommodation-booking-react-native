@@ -93,7 +93,7 @@ const ManageUsers = () => {
   });
 
   return (
-    <View className="h-full bg-white dark:bg-black">
+    <View className="h-full">
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

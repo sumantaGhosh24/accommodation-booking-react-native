@@ -24,21 +24,29 @@ const bookingSchema = new mongoose.Schema(
       required: true,
       default: 0.0,
     },
-    startDate: {
+    checkInDate: {
       type: String,
       required: true,
     },
-    endDate: {
+    checkOutDate: {
+      type: String,
+      required: true,
+    },
+    numberOfDays: {
+      type: String,
+      required: true,
+    },
+    adults: {
+      type: String,
+      required: true,
+    },
+    children: {
       type: String,
       required: true,
     },
     status: {
       type: String,
       default: "pending",
-    },
-    isPaid: {
-      type: Boolean,
-      default: false,
     },
   },
   {timestamps: true}

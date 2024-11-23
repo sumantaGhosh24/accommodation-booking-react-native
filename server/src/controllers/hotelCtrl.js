@@ -10,7 +10,7 @@ const hotelCtrl = {
           .populate("category", "name image"),
         req.query
       )
-        .pagination()
+        .paginating()
         .sorting()
         .searching()
         .filtering();
@@ -129,6 +129,7 @@ const hotelCtrl = {
         latitude,
         longitude,
         state,
+        category,
       } = req.body;
 
       const hotel = await Hotel.findByIdAndUpdate(req.params.id, {
@@ -143,6 +144,7 @@ const hotelCtrl = {
         latitude,
         longitude,
         state,
+        category,
       });
       if (!hotel)
         return res.json({

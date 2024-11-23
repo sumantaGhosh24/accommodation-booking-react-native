@@ -1,21 +1,12 @@
 import {useEffect, useState} from "react";
-import {
-  Image,
-  ScrollView,
-  Text,
-  ToastAndroid,
-  View,
-  StyleSheet,
-} from "react-native";
+import {Image, ScrollView, Text, ToastAndroid, View} from "react-native";
 import {router, useLocalSearchParams} from "expo-router";
 import {SafeAreaView} from "react-native-safe-area-context";
 import axios from "axios";
-import SelectDropdown from "react-native-select-dropdown";
 
 import CustomButton from "@/components/custom-button";
 import {BASE_URL} from "@/constants";
 import {useAuth} from "@/context/auth-context";
-import {FontAwesome} from "@expo/vector-icons";
 
 interface BookingProps {
   _id: string;
@@ -55,15 +46,11 @@ interface BookingProps {
   updatedAt: any;
 }
 
-const statusData = [{title: "pending"}, {title: "complete"}, {title: "cancel"}];
-
-const UpdateHotel = () => {
+const BookingDetails = () => {
   const {id} = useLocalSearchParams();
   const {authState} = useAuth();
 
   const [booking, setBooking] = useState<BookingProps>();
-  const [status, setStatus] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const getBooking = async () => {
     try {
@@ -73,7 +60,6 @@ const UpdateHotel = () => {
 
       if (response.data.success === true) {
         setBooking(response.data.booking);
-        setStatus(response.data.booking?.status);
       }
     } catch (error) {
       ToastAndroid.showWithGravityAndOffset(
@@ -89,48 +75,6 @@ const UpdateHotel = () => {
   useEffect(() => {
     getBooking();
   }, [authState?.accesstoken]);
-
-  const handleSubmit = async () => {
-    if (status === "") {
-      return ToastAndroid.showWithGravityAndOffset(
-        "Fill all fields!",
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        50
-      );
-    }
-
-    try {
-      setLoading(true);
-
-      const response = await axios.put(
-        `${BASE_URL}/booking`,
-        {id, status},
-        {headers: {Authorization: `Bearer ${authState?.accesstoken}`}}
-      );
-
-      ToastAndroid.showWithGravityAndOffset(
-        response.data.message,
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        50
-      );
-
-      getBooking();
-    } catch (error) {
-      ToastAndroid.showWithGravityAndOffset(
-        "Something went wrong, try again later!",
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        50
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <SafeAreaView className="h-screen">
@@ -269,96 +213,9 @@ const UpdateHotel = () => {
             </Text>
           </View>
         </View>
-        <View className="w-full px-4">
-          <SelectDropdown
-            data={statusData}
-            defaultValue={{title: booking?.status}}
-            onSelect={(selectedItem) => {
-              setStatus(selectedItem.title);
-            }}
-            renderButton={(selectedItem, isOpened) => {
-              return (
-                <View style={styles.dropdownButtonStyle}>
-                  <Text style={styles.dropdownButtonTxtStyle}>
-                    {(selectedItem && selectedItem.title) ||
-                      "Select booking status"}
-                  </Text>
-                  <FontAwesome
-                    name={isOpened ? "chevron-up" : "chevron-down"}
-                    style={styles.dropdownButtonArrowStyle}
-                  />
-                </View>
-              );
-            }}
-            renderItem={(item, index, isSelected) => {
-              return (
-                <View
-                  style={{
-                    ...styles.dropdownItemStyle,
-                    ...(isSelected && {backgroundColor: "#D2D9DF"}),
-                  }}
-                >
-                  <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
-                </View>
-              );
-            }}
-            showsVerticalScrollIndicator={false}
-            dropdownStyle={styles.dropdownMenuStyle}
-          />
-          <CustomButton
-            title="Update Booking Status"
-            handlePress={handleSubmit}
-            containerStyles="bg-blue-700 disabled:bg-blue-300 mb-5"
-            isLoading={loading}
-          />
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  dropdownButtonStyle: {
-    height: 50,
-    backgroundColor: "#E9ECEF",
-    borderRadius: 12,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 12,
-    marginBottom: 10,
-  },
-  dropdownButtonTxtStyle: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: "500",
-    color: "#151E26",
-  },
-  dropdownButtonArrowStyle: {
-    fontSize: 28,
-  },
-  dropdownMenuStyle: {
-    backgroundColor: "#E9ECEF",
-    borderRadius: 8,
-  },
-  dropdownItemStyle: {
-    width: "100%",
-    flexDirection: "row",
-    paddingHorizontal: 12,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 8,
-  },
-  dropdownItemTxtStyle: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: "500",
-    color: "#151E26",
-  },
-  dropdownItemIconStyle: {
-    fontSize: 24,
-    marginRight: 8,
-  },
-});
-
-export default UpdateHotel;
+export default BookingDetails;

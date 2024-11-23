@@ -35,10 +35,6 @@ const hotelSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    booked: {
-      type: Boolean,
-      default: false,
-    },
     country: {
       type: String,
       required: true,
@@ -66,10 +62,6 @@ const hotelSchema = new mongoose.Schema(
     longitude: {
       type: String,
       required: true,
-    },
-    verified: {
-      type: Boolean,
-      default: false,
     },
   },
   {timestamps: true}

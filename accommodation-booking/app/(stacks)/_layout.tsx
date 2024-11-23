@@ -45,6 +45,11 @@ const StackLayout = () => {
           options={{headerShown: false}}
           redirect={authState?.role !== Role.ADMIN}
         />
+        <Stack.Screen
+          name="booking/details/[id]"
+          options={{headerShown: false}}
+          redirect={authState?.accesstoken === null}
+        />
       </Stack>
     </>
   );
