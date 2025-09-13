@@ -13,7 +13,6 @@ import {Row, Table} from "react-native-table-component";
 
 import {BASE_URL} from "@/constants";
 import {useAuth} from "@/context/auth-context";
-import CustomButton from "@/components/custom-button";
 import IconButton from "@/components/icon-button";
 
 interface BookingProps {
@@ -60,7 +59,7 @@ const HotelBooking = () => {
       });
 
       setBookings(response.data.bookings);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -144,7 +143,7 @@ const HotelBooking = () => {
                     {bookings
                       ?.map((booking) => [
                         booking._id,
-                        <View>
+                        <View key={booking._id}>
                           <Text>{booking.user.username}</Text>
                           <Text>{booking.user.email}</Text>
                         </View>,
@@ -157,7 +156,7 @@ const HotelBooking = () => {
                         booking.status,
                         new Date(booking.createdAt).toLocaleDateString(),
                         new Date(booking.updatedAt).toLocaleDateString(),
-                        <View>
+                        <View key={booking._id}>
                           <IconButton
                             icon={
                               <FontAwesome

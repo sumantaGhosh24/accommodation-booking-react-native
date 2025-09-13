@@ -95,7 +95,7 @@ const ProfileUserImage = () => {
         {url: response.data.secure_url, public_id: response.data.public_id},
         authState?.accesstoken!
       );
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,

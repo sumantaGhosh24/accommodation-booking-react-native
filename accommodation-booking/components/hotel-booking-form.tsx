@@ -23,7 +23,7 @@ const HotelBookingForm = ({id, price}: HotelBookingFormProps) => {
   const [loading, setLoading] = useState(false);
 
   const minDate = new Date();
-  const maxDate = new Date(2025, 2, 1);
+  const maxDate = new Date(2026, 2, 1);
 
   const handleChange = (...arg: any[]) => {
     if (arg[1] === "END_DATE") {
@@ -95,7 +95,7 @@ const HotelBookingForm = ({id, price}: HotelBookingFormProps) => {
         );
       }
 
-      var options = {
+      const options = {
         description: "Credits towards consultation",
         image: "https://i.imgur.com/3g7nmJC.png",
         currency: response.data.order.currency,
@@ -154,7 +154,7 @@ const HotelBookingForm = ({id, price}: HotelBookingFormProps) => {
             50
           );
         });
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,

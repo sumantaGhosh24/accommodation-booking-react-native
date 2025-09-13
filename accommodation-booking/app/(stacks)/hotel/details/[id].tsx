@@ -3,7 +3,6 @@ import {View, Text, ToastAndroid, Image, ScrollView} from "react-native";
 import {router, useLocalSearchParams} from "expo-router";
 import {SafeAreaView} from "react-native-safe-area-context";
 import axios from "axios";
-import Markdown from "react-native-markdown-display";
 
 import {useAuth} from "@/context/auth-context";
 import {BASE_URL} from "@/constants";
@@ -65,7 +64,7 @@ const HotelDetails = () => {
       if (response.data.success === true) {
         setHotel(response.data.hotel);
       }
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -103,9 +102,9 @@ const HotelDetails = () => {
             )}
           </View>
           <View className="flex flex-row items-center flex-wrap gap-3">
-            {hotel?.images.map((image) => (
+            {hotel?.images.map((image, i) => (
               <Image
-                key={image.public_id}
+                key={`${image.public_id}-${i}`}
                 source={{uri: image.url}}
                 alt={image.public_id}
                 resizeMode="cover"
@@ -120,7 +119,7 @@ const HotelDetails = () => {
             {hotel?.description}
           </Text>
           <View className="bg-white px-2 rounded my-3">
-            <Markdown>{hotel?.content}</Markdown>
+            <Text>{hotel?.content}</Text>
           </View>
           <View className="flex flex-row items-center gap-2">
             <Text className="text-black dark:text-white text-sm font-bold">

@@ -46,7 +46,7 @@ const ManageUsers = () => {
       });
 
       setUsers(response.data.users);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -141,13 +141,16 @@ const ManageUsers = () => {
                         user.mobileNumber,
                         `${user.firstName || ""} ${user.lastName || ""}`,
                         user.username || "",
-                        <Image
-                          source={{uri: user.image.url!}}
-                          alt={user.image.public_id!}
-                          className="h-[60px] max-w-[100px] rounded ml-[50px]"
-                          resizeMode="cover"
-                        />,
-                        new Date(user.dob).toLocaleDateString(),
+                        user.image ? (
+                          <Image
+                            source={{uri: user.image.url!}}
+                            alt={user.image.public_id!}
+                            className="h-[60px] max-w-[100px] rounded ml-[50px]"
+                            resizeMode="cover"
+                            key={user._id}
+                          />
+                        ) : "",
+                        user.dob ? new Date(user.dob).toLocaleDateString() : "",
                         user.gender || "",
                         user.city || "",
                         user.state || "",

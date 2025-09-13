@@ -65,7 +65,7 @@ const AddHotelRating = ({id, setFetch}: AddHotelRatingProps) => {
         comment: "",
         rating: 0,
       });
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,

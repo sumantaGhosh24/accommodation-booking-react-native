@@ -70,7 +70,7 @@ const ManageHotels = () => {
       const response = await axios.get(`${BASE_URL}/hotels`);
 
       setHotels(response.data.hotels);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -152,7 +152,7 @@ const ManageHotels = () => {
 
         getHotels();
       }
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -222,8 +222,12 @@ const ManageHotels = () => {
                           alt={hotel.images[0].public_id!}
                           className="h-[60px] max-w-[100px] rounded ml-[50px]"
                           resizeMode="cover"
+                          key={hotel._id}
                         />,
-                        <View className="flex flex-row items-center ml-3">
+                        <View
+                          key={hotel._id}
+                          className="flex flex-row items-center ml-3"
+                        >
                           <Image
                             source={{uri: hotel.category.image.url}}
                             className="mr-3 h-[50px] w-[50px] rounded"
@@ -233,7 +237,10 @@ const ManageHotels = () => {
                             {hotel.category.name}
                           </Text>
                         </View>,
-                        <View className="flex flex-row items-center ml-3">
+                        <View
+                          key={hotel._id}
+                          className="flex flex-row items-center ml-3"
+                        >
                           <Image
                             source={{uri: hotel.owner.image.url}}
                             className="mr-3 h-[50px] w-[50px] rounded"
@@ -258,7 +265,10 @@ const ManageHotels = () => {
                         hotel.longitude,
                         new Date(hotel.createdAt).toLocaleDateString(),
                         new Date(hotel.updatedAt).toLocaleDateString(),
-                        <View className="flex flex-row ml-[45px]">
+                        <View
+                          className="flex flex-row ml-[45px]"
+                          key={hotel._id}
+                        >
                           <IconButton
                             icon={
                               <FontAwesome name="eye" size={24} color="white" />

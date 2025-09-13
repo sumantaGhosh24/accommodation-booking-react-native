@@ -24,7 +24,7 @@ const UpdateCategory = () => {
       if (response.data.success === true) {
         setName(response.data.category.name);
       }
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -73,7 +73,7 @@ const UpdateCategory = () => {
       if (response.data.success === true) {
         getCategory();
       }
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,

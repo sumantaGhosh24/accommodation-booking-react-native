@@ -92,7 +92,7 @@ const AddHotelImage = ({id}: {id: string}) => {
       if (response.data.success === true) {
         setImages([]);
       }
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,

@@ -51,7 +51,7 @@ export default function RootLayout() {
           </View>
         </AuthProvider>
       </ThemeProvider>
-      <StatusBar style="inverted" backgroundColor="#1D4ED8" />
+      <StatusBar style="auto" />
     </>
   );
 }

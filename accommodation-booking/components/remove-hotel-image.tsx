@@ -19,7 +19,7 @@ const RemoveHotelImage = ({id}: {id: string}) => {
       const response = await axios.get(`${BASE_URL}/hotel/${id}`);
 
       setImages(response.data.hotel.images);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,

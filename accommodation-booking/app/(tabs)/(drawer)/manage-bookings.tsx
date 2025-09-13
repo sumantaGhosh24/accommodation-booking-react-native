@@ -58,7 +58,7 @@ const ManageBookings = () => {
       });
 
       setBookings(response.data.bookings);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -143,11 +143,11 @@ const ManageBookings = () => {
                     {bookings
                       .map((booking) => [
                         booking._id,
-                        <View>
+                        <View key={booking._id}>
                           <Text>{booking.user.username}</Text>
                           <Text>{booking.user.email}</Text>
                         </View>,
-                        <View>
+                        <View key={booking._id}>
                           <Text>{booking.hotel.title}</Text>
                           <CustomButton
                             title="Hotel Bookings"
@@ -166,7 +166,7 @@ const ManageBookings = () => {
                         booking.status,
                         new Date(booking.createdAt).toLocaleDateString(),
                         new Date(booking.updatedAt).toLocaleDateString(),
-                        <View>
+                        <View key={booking._id}>
                           <IconButton
                             icon={
                               <FontAwesome

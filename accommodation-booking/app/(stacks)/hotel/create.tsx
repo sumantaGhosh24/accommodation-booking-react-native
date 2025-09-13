@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-  Platform,
 } from "react-native";
 import {router} from "expo-router";
 import {SafeAreaView} from "react-native-safe-area-context";
@@ -15,10 +14,6 @@ import * as ImagePicker from "expo-image-picker";
 import {FontAwesome, FontAwesome5} from "@expo/vector-icons";
 import axios from "axios";
 import SelectDropdown from "react-native-select-dropdown";
-import {
-  MarkdownTextInput,
-  MarkdownStyle,
-} from "@expensify/react-native-live-markdown";
 
 import FormField from "@/components/form-field";
 import CustomButton from "@/components/custom-button";
@@ -35,52 +30,6 @@ interface CategoryTypes {
   };
 }
 
-const FONT_FAMILY_MONOSPACE = Platform.select({
-  ios: "Courier",
-  default: "monospace",
-});
-
-const markdownStyle: MarkdownStyle = {
-  syntax: {
-    color: "gray",
-  },
-  link: {
-    color: "blue",
-  },
-  h1: {
-    fontSize: 25,
-  },
-  emoji: {
-    fontSize: 20,
-  },
-  blockquote: {
-    borderColor: "gray",
-    borderWidth: 6,
-    marginLeft: 6,
-    paddingLeft: 6,
-  },
-  code: {
-    fontFamily: FONT_FAMILY_MONOSPACE,
-    fontSize: 20,
-    color: "black",
-    backgroundColor: "lightgray",
-  },
-  pre: {
-    fontFamily: FONT_FAMILY_MONOSPACE,
-    fontSize: 20,
-    color: "black",
-    backgroundColor: "lightgray",
-  },
-  mentionHere: {
-    color: "green",
-    backgroundColor: "lime",
-  },
-  mentionUser: {
-    color: "blue",
-    backgroundColor: "cyan",
-  },
-};
-
 const CreateHotel = () => {
   const {authState} = useAuth();
 
@@ -89,6 +38,7 @@ const CreateHotel = () => {
   const [form, setForm] = useState({
     title: "",
     description: "",
+    content: "",
     category: "",
     price: "",
     country: "",
@@ -100,14 +50,13 @@ const CreateHotel = () => {
     longitude: "",
   });
   const [images, setImages] = useState<any[]>([]);
-  const [content, setContent] = useState("Hello, *world*!");
 
   const getCategories = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/category`);
 
       setCategories(response.data.categories);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -162,7 +111,7 @@ const CreateHotel = () => {
       form.address === "" ||
       form.latitude === "" ||
       form.longitude === "" ||
-      content === "" ||
+      form.content === "" ||
       !images
     ) {
       return ToastAndroid.showWithGravityAndOffset(
@@ -197,7 +146,7 @@ const CreateHotel = () => {
 
       const response = await axios.post(
         `${BASE_URL}/hotel`,
-        {...form, content, images: filteredImageData},
+        {...form, images: filteredImageData},
         {headers: {Authorization: `Bearer ${authState?.accesstoken}`}}
       );
 
@@ -212,7 +161,7 @@ const CreateHotel = () => {
       if (response.data.success === true) {
         router.push("/manage-hotels");
       }
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -300,23 +249,6 @@ const CreateHotel = () => {
             showsVerticalScrollIndicator={false}
             dropdownStyle={styles.dropdownMenuStyle}
           />
-          <Text className="font-bold mb-3">Hotel Content</Text>
-          <MarkdownTextInput
-            value={content}
-            onChangeText={setContent}
-            markdownStyle={markdownStyle}
-            style={{
-              borderWidth: 2,
-              borderColor: "black",
-              height: 250,
-              verticalAlign: "top",
-              borderRadius: 10,
-              marginBottom: 3,
-              padding: 10,
-            }}
-            multiline={true}
-            numberOfLines={20}
-          />
           <FormField
             title="Hotel Title"
             placeholder="Enter hotel title"
@@ -337,6 +269,16 @@ const CreateHotel = () => {
             custom={true}
             autoComplete="name"
             keyboardType="default"
+          />
+          <FormField
+            title="Hotel Content"
+            placeholder="Enter hotel content"
+            value={form.content}
+            handleChangeText={(text: any) => setForm({...form, content: text})}
+            otherStyles="mb-3"
+            autoComplete="name"
+            keyboardType="default"
+            custom={true}
           />
           <FormField
             title="Hotel Price"

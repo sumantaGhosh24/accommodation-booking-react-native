@@ -61,7 +61,7 @@ const BookingDetails = () => {
       if (response.data.success === true) {
         setBooking(response.data.booking);
       }
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,

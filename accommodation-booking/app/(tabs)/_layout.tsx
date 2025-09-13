@@ -14,7 +14,7 @@ interface TabIconProps {
 
 const TabIcon = ({icon, color, name, focused}: TabIconProps) => {
   return (
-    <View className="flex items-center justify-center gap-2">
+    <View className="flex items-center justify-center gap-2 mt-5">
       {icon}
       <Text
         className={`${focused ? "font-medium" : ""} text-xs`}
@@ -49,7 +49,7 @@ const TabLayout = () => {
           options={{
             title: "Home",
             headerShown: false,
-            tabBarIcon: ({color, focused}) => (
+            tabBarIcon: ({color, focused}: any) => (
               <TabIcon
                 icon={<FontAwesome name="home" size={24} color={color} />}
                 name="Home"
@@ -65,7 +65,7 @@ const TabLayout = () => {
           options={{
             title: "Profile",
             headerShown: false,
-            tabBarIcon: ({color, focused}) => (
+            tabBarIcon: ({color, focused}: any) => (
               <TabIcon
                 icon={<FontAwesome name="user" size={24} color={color} />}
                 name="Profile"
@@ -77,7 +77,7 @@ const TabLayout = () => {
           redirect={authState?.accesstoken === null}
         />
       </Tabs>
-      <StatusBar style="inverted" backgroundColor="#1D4ED8" />
+      <StatusBar style="auto" />
     </>
   );
 };

@@ -42,12 +42,12 @@ const Onboarding = () => {
       onDone={() => router.push("/login")}
       onSkip={() => router.push("/login")}
       renderNextButton={() => (
-        <View className="bg-blue-700 rounded-xl py-2.5 px-4 flex flex-row justify-center items-center">
+        <View className="bg-blue-700 rounded-xl py-2.5 px-4 flex flex-row justify-center items-center mb-20">
           <Text className="text-white font-semibold text-lg">Next</Text>
         </View>
       )}
       renderDoneButton={() => (
-        <View className="bg-blue-700 rounded-xl py-2.5 px-4 flex flex-row justify-center items-center">
+        <View className="bg-blue-700 rounded-xl py-2.5 px-4 flex flex-row justify-center items-center mb-20">
           <Text className="text-white font-semibold text-lg">Done</Text>
         </View>
       )}

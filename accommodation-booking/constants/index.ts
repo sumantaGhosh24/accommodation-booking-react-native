@@ -32,7 +32,7 @@ export const onboardingSwiperData = [
   },
 ];
 
-export const BASE_URL = "/api/v1";
+export const BASE_URL = "https://bulldog-fond-reasonably.ngrok-free.app/api/v1";
 
 export const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
 export const CLOUDINARY_DESTROY_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/destroy`;

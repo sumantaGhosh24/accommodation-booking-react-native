@@ -42,7 +42,7 @@ const ManageCategory = () => {
       const response = await axios.get(`${BASE_URL}/category`);
 
       setCategories(response.data.categories);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -101,7 +101,7 @@ const ManageCategory = () => {
 
         getCategories();
       }
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -170,10 +170,14 @@ const ManageCategory = () => {
                           alt={category.image.public_id!}
                           className="h-[60px] max-w-[100px] rounded ml-[50px]"
                           resizeMode="cover"
+                          key={category._id}
                         />,
                         new Date(category.createdAt).toLocaleDateString(),
                         new Date(category.updatedAt).toLocaleDateString(),
-                        <View className="flex flex-row ml-[45px]">
+                        <View
+                          key={category._id}
+                          className="flex flex-row ml-[45px]"
+                        >
                           <IconButton
                             icon={
                               <FontAwesome

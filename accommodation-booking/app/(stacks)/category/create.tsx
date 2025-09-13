@@ -89,7 +89,7 @@ const CreateCategory = () => {
       if (response.data.success === true) {
         router.push("/manage-category");
       }
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,

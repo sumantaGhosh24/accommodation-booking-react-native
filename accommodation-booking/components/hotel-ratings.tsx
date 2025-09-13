@@ -47,7 +47,7 @@ const HotelRatings = ({id, fetch}: HotelRatingsProps) => {
       });
 
       setRatings(response.data.ratings);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,

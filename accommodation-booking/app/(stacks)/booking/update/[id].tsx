@@ -75,7 +75,7 @@ const UpdateHotel = () => {
         setBooking(response.data.booking);
         setStatus(response.data.booking?.status);
       }
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -119,7 +119,7 @@ const UpdateHotel = () => {
       );
 
       getBooking();
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,

@@ -38,7 +38,7 @@ const MyRatings = () => {
       });
 
       setRatings(response.data.ratings);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -111,7 +111,7 @@ const MyRatings = () => {
                         rating._id,
                         rating.comment,
                         rating.rating,
-                        <View>
+                        <View key={rating._id}>
                           <Text>
                             {rating.user.firstName} {rating.user.lastName}
                           </Text>

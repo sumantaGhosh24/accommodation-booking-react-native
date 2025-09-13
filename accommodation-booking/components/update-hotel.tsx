@@ -1,19 +1,8 @@
 import {useState, useEffect} from "react";
-import {
-  Text,
-  ToastAndroid,
-  View,
-  StyleSheet,
-  Image,
-  Platform,
-} from "react-native";
+import {Text, ToastAndroid, View, StyleSheet, Image} from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 import {FontAwesome} from "@expo/vector-icons";
 import axios from "axios";
-import {
-  MarkdownTextInput,
-  MarkdownStyle,
-} from "@expensify/react-native-live-markdown";
 
 import {useAuth} from "@/context/auth-context";
 import {BASE_URL} from "@/constants";
@@ -30,52 +19,6 @@ interface CategoryTypes {
   };
 }
 
-const FONT_FAMILY_MONOSPACE = Platform.select({
-  ios: "Courier",
-  default: "monospace",
-});
-
-const markdownStyle: MarkdownStyle = {
-  syntax: {
-    color: "gray",
-  },
-  link: {
-    color: "blue",
-  },
-  h1: {
-    fontSize: 25,
-  },
-  emoji: {
-    fontSize: 20,
-  },
-  blockquote: {
-    borderColor: "gray",
-    borderWidth: 6,
-    marginLeft: 6,
-    paddingLeft: 6,
-  },
-  code: {
-    fontFamily: FONT_FAMILY_MONOSPACE,
-    fontSize: 20,
-    color: "black",
-    backgroundColor: "lightgray",
-  },
-  pre: {
-    fontFamily: FONT_FAMILY_MONOSPACE,
-    fontSize: 20,
-    color: "black",
-    backgroundColor: "lightgray",
-  },
-  mentionHere: {
-    color: "green",
-    backgroundColor: "lime",
-  },
-  mentionUser: {
-    color: "blue",
-    backgroundColor: "cyan",
-  },
-};
-
 const UpdateHotel = ({id}: {id: string}) => {
   const {authState} = useAuth();
 
@@ -84,6 +27,7 @@ const UpdateHotel = ({id}: {id: string}) => {
   const [form, setForm] = useState({
     title: "",
     description: "",
+    content: "",
     category: "",
     price: "",
     country: "",
@@ -94,7 +38,6 @@ const UpdateHotel = ({id}: {id: string}) => {
     latitude: "",
     longitude: "",
   });
-  const [content, setContent] = useState("");
   const [defaultCategory, setDefaultCategory] = useState();
 
   const getCategories = async () => {
@@ -102,7 +45,7 @@ const UpdateHotel = ({id}: {id: string}) => {
       const response = await axios.get(`${BASE_URL}/category`);
 
       setCategories(response.data.categories);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -120,6 +63,7 @@ const UpdateHotel = ({id}: {id: string}) => {
       setForm({
         title: response.data.hotel.title,
         description: response.data.hotel.description,
+        content: response.data.hotel.content,
         category: response.data.hotel.category._id,
         price: response.data.hotel.price,
         country: response.data.hotel.country,
@@ -131,8 +75,7 @@ const UpdateHotel = ({id}: {id: string}) => {
         longitude: response.data.hotel.longitude,
       });
       setDefaultCategory(response.data.hotel.category);
-      setContent(response.data.hotel.content);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -161,7 +104,7 @@ const UpdateHotel = ({id}: {id: string}) => {
       form.address === "" ||
       form.latitude === "" ||
       form.longitude === "" ||
-      content === ""
+      form.content === ""
     ) {
       return ToastAndroid.showWithGravityAndOffset(
         "Fill all fields!",
@@ -177,7 +120,7 @@ const UpdateHotel = ({id}: {id: string}) => {
 
       const response = await axios.put(
         `${BASE_URL}/hotel/${id}`,
-        {...form, content},
+        {...form},
         {headers: {Authorization: `Bearer ${authState?.accesstoken}`}}
       );
 
@@ -192,7 +135,7 @@ const UpdateHotel = ({id}: {id: string}) => {
       if (response.data.success === true) {
         getHotel();
       }
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -247,22 +190,6 @@ const UpdateHotel = ({id}: {id: string}) => {
         showsVerticalScrollIndicator={false}
         dropdownStyle={styles.dropdownMenuStyle}
       />
-      <MarkdownTextInput
-        value={content}
-        onChangeText={setContent}
-        markdownStyle={markdownStyle}
-        style={{
-          borderWidth: 2,
-          borderColor: "black",
-          height: 250,
-          verticalAlign: "top",
-          borderRadius: 10,
-          marginBottom: 3,
-          padding: 10,
-        }}
-        multiline={true}
-        numberOfLines={20}
-      />
       <FormField
         title="Hotel Title"
         placeholder="Enter hotel title"
@@ -281,6 +208,16 @@ const UpdateHotel = ({id}: {id: string}) => {
         custom={true}
         autoComplete="name"
         keyboardType="default"
+      />
+      <FormField
+        title="Hotel Content"
+        placeholder="Enter hotel content"
+        value={form.content}
+        handleChangeText={(text: any) => setForm({...form, content: text})}
+        otherStyles="mb-3"
+        autoComplete="name"
+        keyboardType="default"
+        custom={true}
       />
       <FormField
         title="Hotel Price"

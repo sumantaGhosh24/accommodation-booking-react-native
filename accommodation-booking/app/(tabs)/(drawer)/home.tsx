@@ -88,7 +88,7 @@ const Home = () => {
           },
         },
       ]);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -105,16 +105,16 @@ const Home = () => {
     try {
       setLoading(true);
 
-      var str = "";
-      if (data.search != "") str += `&search=${data.search}`;
-      if (data.category != "") str += `&category=${data.category}`;
+      let str = "";
+      if (data.search !== "") str += `&search=${data.search}`;
+      if (data.category !== "") str += `&category=${data.category}`;
 
       const response = await axios.get(
         `${BASE_URL}/p-hotels?page=${data.page}&sort=${data.sort}${str}`
       );
 
       setHotels(response.data);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,

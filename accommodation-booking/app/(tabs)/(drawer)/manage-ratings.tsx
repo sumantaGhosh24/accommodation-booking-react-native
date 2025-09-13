@@ -41,7 +41,7 @@ const ManageRatings = () => {
       });
 
       setRatings(response.data.ratings);
-    } catch (error) {
+    } catch {
       ToastAndroid.showWithGravityAndOffset(
         "Something went wrong, try again later!",
         ToastAndroid.LONG,
@@ -122,13 +122,13 @@ const ManageRatings = () => {
                         rating._id,
                         rating.comment,
                         rating.rating,
-                        <View>
+                        <View key={rating._id}>
                           <Text>
                             {rating.user.firstName} {rating.user.lastName}
                           </Text>
                           <Text>{rating.user.email}</Text>
                         </View>,
-                        <View>
+                        <View key={rating._id}>
                           <Text>{rating.hotel.title}</Text>
                         </View>,
                         new Date(rating.createdAt).toLocaleDateString(),
